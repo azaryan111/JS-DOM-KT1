@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Случайные числа в таблице</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid black;
+            text-align: center;
+        }
+
+        .orange {
+            background-color: orange;
+        }
+
+    </style>
+</head>
+<body>
+    
+    <button onclick="addNumber()">Добавить числа</button>
+    
+    <div id="tableContainer"></div>
+    
+    <script>
+        let numbersArray = [];
+        for (let i = 0; i < 30; i++) {
+            numbersArray.push(Math.floor(Math.random() * 100));
+        }
+        
+        function createTable() {
+            let table = '<table>';
+            
+            let index = 0;
+            for (let row = 0; row < 5; row++) {
+                table += '<tr>';
+                for (let col = 0; col < 6; col++) {
+                    const num = numbersArray[index];
+                    const cellClass = num >= 50 ? 'orange' : '';
+                    table += `<td class="${cellClass}">${num}</td>`;
+                    index++;
+                }
+                table += '</tr>';
+            }
+            
+            table += '</table>';
+            document.getElementById('tableContainer').innerHTML = table;
+        }
+        
+        function addNumber() {
+            const newNumber = Math.floor(Math.random() * 100);
+            numbersArray.push(newNumber);
+
+            numbersArray.shift();
+            createTable();
+        }
+        
+        document.addEventListener('DOMContentLoaded', createTable);
+    </script>
+</body>
+</html>
