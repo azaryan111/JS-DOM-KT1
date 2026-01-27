@@ -2,64 +2,87 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
     <style>
         table {
             border-collapse: collapse;
+            margin: 20px 0;
         }
-
         th, td {
             border: 1px solid black;
+            padding: 10px;
             text-align: center;
+            min-width: 50px;
         }
-
         .orange {
             background-color: orange;
         }
-
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
-    
-    <button onclick="addNumber()">Добавить числа</button>
-    
-    <div id="tableContainer"></div>
-    
-    <script>
-        let numbersArray = [];
-        for (let i = 0; i < 30; i++) {
-            numbersArray.push(Math.floor(Math.random() * 100));
-        }
-        
-        function createTable() {
-            let table = '<table>';
-            
-            let index = 0;
-            for (let row = 0; row < 5; row++) {
-                table += '<tr>';
-                for (let col = 0; col < 6; col++) {
-                    const num = numbersArray[index];
-                    const cellClass = num >= 50 ? 'orange' : '';
-                    table += `<td class="${cellClass}">${num}</td>`;
-                    index++;
-                }
-                table += '</tr>';
-            }
-            
-            table += '</table>';
-            document.getElementById('tableContainer').innerHTML = table;
-        }
-        
-        function addNumber() {
-            const newNumber = Math.floor(Math.random() * 100);
-            numbersArray.push(newNumber);
 
-            numbersArray.shift();
-            createTable();
+    <h1>КТ №1. Таблица со случайными числами</h1>
+
+    <button onclick="addNumber()">Добавить число</button>
+
+    <div 
+          id="table-container"> 
+    </div>
+
+    <script>
+        let numbers = [];
+        for (let i = 0; i < 30; i++) {
+            numbers.push(Math.floor(Math.random() * 100));
         }
-        
-        document.addEventListener('DOMContentLoaded', createTable);
+
+        function createTable(nums) {
+            let table = document.createElement('table');
+            let index = 0;
+            let rows = 5;
+            let cols = 6;
+
+            rows = Math.ceil(nums.length / cols);
+
+            for (let row = 0; row < rows; row++) {
+                let tr = document.createElement('tr');
+                for (let col = 0; col < cols; col++) {
+                    let td = document.createElement('td');
+                    if (index < nums.length) {
+                        let num = nums[index];
+                        td.textContent = num;
+                        if (num >= 50) {
+                            td.classList.add('orange');
+                        }
+                        index++;
+                    } else {
+                        td.textContent = '';
+                    }
+                    tr.appendChild(td);
+                }
+                table.appendChild(tr);
+            }
+
+            return table;
+        }
+
+        let container = document.getElementById('table-container');
+        container.appendChild(createTable(numbers));
+
+
+        function addNumber() {
+            let newNum = Math.floor(Math.random() * 100);
+            numbers.push(newNum); // добавляем в массив
+
+            container.innerHTML = '';
+            container.appendChild(createTable(numbers));
+        }
     </script>
+
 </body>
 </html>
