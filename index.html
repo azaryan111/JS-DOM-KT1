@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    <title>КТ №1. Таблица со случайными числами</title>
     <style>
         table {
             border-collapse: collapse;
@@ -31,9 +31,7 @@
 
     <button onclick="addNumber()">Добавить число</button>
 
-    <div 
-          id="table-container"> 
-    </div>
+    <div id="table-container"></div>
 
     <script>
         let numbers = [];
@@ -41,46 +39,40 @@
             numbers.push(Math.floor(Math.random() * 100));
         }
 
-        function createTable(nums) {
-            let table = document.createElement('table');
-            let index = 0;
+        function generateTableHTML(nums) {
             let rows = 5;
             let cols = 6;
-
+            let index = 0;
+            let html = '<table>';
+            
             rows = Math.ceil(nums.length / cols);
-
+            
             for (let row = 0; row < rows; row++) {
-                let tr = document.createElement('tr');
+                html += '<tr>';
                 for (let col = 0; col < cols; col++) {
-                    let td = document.createElement('td');
                     if (index < nums.length) {
                         let num = nums[index];
-                        td.textContent = num;
-                        if (num >= 50) {
-                            td.classList.add('orange');
-                        }
+                        let className = num >= 50 ? ' class="orange"' : '';
+                        html += `<td${className}>${num}</td>`;
                         index++;
                     } else {
-                        td.textContent = '';
+                        html += '<td></td>';
                     }
-                    tr.appendChild(td);
                 }
-                table.appendChild(tr);
+                html += '</tr>';
             }
-
-            return table;
+            html += '</table>';
+            
+            return html;
         }
 
-        let container = document.getElementById('table-container');
-        container.appendChild(createTable(numbers));
-
+        document.getElementById('table-container').innerHTML = generateTableHTML(numbers);
 
         function addNumber() {
             let newNum = Math.floor(Math.random() * 100);
-            numbers.push(newNum); // добавляем в массив
-
-            container.innerHTML = '';
-            container.appendChild(createTable(numbers));
+            numbers.push(newNum);
+            
+            document.getElementById('table-container').innerHTML = generateTableHTML(numbers);
         }
     </script>
 
